@@ -1,0 +1,5 @@
+5. Make a file called `random.txt`.
+
+   * Inside of `random.txt` put the following in with no extra characters or white space:
+
+     * spotify-this-song,"I Want it That Way"
