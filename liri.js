@@ -5,7 +5,6 @@ var fs = require("fs");
 var keys = require("./keys");
 var Spotify = require();
 var spotify = new Spotify();
-//vars to capture user inputs.
 var liriReturn = process.argv[2]; 
 var name = process.argv[3];
 
@@ -20,6 +19,8 @@ switch (liriReturn) {
     break;
 }
 
+
+//SPOTIFY API function
 function spotifyThisSong(trackName) {
     var trackName = process.argv[3];
     if (!trackName) {
@@ -52,5 +53,33 @@ function spotifyThisSong(trackName) {
         });
 };
   
+// OMDBAPI function
+function movieThis() {
+
+    //using name from var list at top
+    var queryUrl = "http://www.omdbapi.com/?t=" + name + "&y=&plot=short&apikey=trilogy";
+
+    request(queryUrl, function (error, response, body) {
+
+        if (!error && response.statusCode === 200) {
+
+            var myMovieData = JSON.parse(body);
+            var queryUrlResults =
+                "Title: " + myMovieData.Title + "\n" +
+                "Year: " + myMovieData.Year + "\n" +
+                "IMDB Rating: " + myMovieData.Ratings[0].Value + "\n" +
+                "Rotten Tomatoes Rating: " + myMovieData.Ratings[1].Value + "\n" +
+                "Origin Country: " + myMovieData.Country + "\n" +
+                "Language: " + myMovieData.Language + "\n" +
+                "Plot: " + myMovieData.Plot + "\n" +
+                "Actors: " + myMovieData.Actors + "\n"
+
+            console.log(queryUrlResults);
+        } else {
+            console.log("error: " + err);
+            return;
+        };
+    });
+};
 
         
