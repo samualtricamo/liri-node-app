@@ -20,7 +20,26 @@ switch (liriReturn) {
     break;
 }
 
+function spotifyThisSong(trackName) {
+    var trackName = process.argv[3];
+    if (!trackName) {
+        trackName = "The Song";
+    };
+    songRequest = trackName;
+    spotify.search({
+        type: "track",
+        query: songRequest
+    },
+        function (err, data) {
+            if (!err) {
+                var trackInfo = data.tracks.items;
+                for (var i = 0; i < 5; i++) {
+                    if (trackInfo[i] != undefined) {
+                        var spotifyResults =
+                            "Artist: " + trackInfo[i].artists[0].name + "\n" +
+                            "Song: " + trackInfo[i].name + "\n" +
+                            "Preview URL: " + trackInfo[i].preview_url + "\n" +
+                            "Album: " + trackInfo[i].album.name + "\n"
 
-  
 
         
