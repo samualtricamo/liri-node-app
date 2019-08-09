@@ -41,5 +41,16 @@ function spotifyThisSong(trackName) {
                             "Preview URL: " + trackInfo[i].preview_url + "\n" +
                             "Album: " + trackInfo[i].album.name + "\n"
 
+                        console.log(spotifyResults);
+                        console.log(' ');
+                    };
+                };
+            } else {
+                console.log("error: " + err);
+                return;
+            };
+        });
+};
+  
 
         
