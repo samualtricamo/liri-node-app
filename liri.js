@@ -6,25 +6,47 @@ var keys = require("./keys");
 var Spotify = require();
 var spotify = new Spotify();
 var liriReturn = process.argv[2]; 
-var name = process.argv[3];
+var movieName = process.argv[3];
 
 
 switch (liriReturn) {
-    case "spotify-this-song":
-    spotifyThisSong();
+    case "concert-this":  //bands in town
+    searchForBandsInTown(searchTerm);
     break;
 
-    case "movie-this":
-    movieThis();
+    case "spotify-your-song": //spotify
+    spotifyThisSong(searchTerm);
+    break;
+
+    case "movie-this": //omdbapi
+    movieThis(searchTerm);
     break;
 }
-
+//bands in town api function//
+function searchForBandsInTown(artist) {
+    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    axios.get(queryUrl).then(
+        function(response) {
+            if(response.data[0].venue !=  undefined) {
+                console.log("Event Veunue: " + response.data[0].venue.name);
+                console.log("Event Location: " + response.data[0].venue.city);
+                var eventDateTime = moment(response.data[0].datetime);
+                console.log("Event Date & Time: " + eventDateTime.format("dddd, MMMM Do YYYY"));
+            }
+            else {
+                console.log("No results found.");
+            }
+        }
+    ).catch(function (error) {
+        console.log (error);
+  });
+}
 
 //SPOTIFY API function
 function spotifyThisSong(trackName) {
     var trackName = process.argv[3];
     if (!trackName) {
-        trackName = "The Song";
+        trackName = "Your Song";
     };
     songRequest = trackName;
     spotify.search({
@@ -82,4 +104,16 @@ function movieThis() {
     });
 };
 
-        
+function doWhatItSays() {
+
+    fs.writeFile("random.txt", 'spotify-this-song,"Your Song"', function (err) {
+        var song = "spotify-this-song 'Your Song'"
+        // If the code experiences any errors it will log the error to the console.
+        if (err) {
+            return console.log(err);
+        };
+
+        // Otherwise, it will print:
+        console.log(song);
+    });
+};

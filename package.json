@@ -12,6 +12,10 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "inquirer": "^6.2.1"
+  },
   "bugs": {
     "url": "https://github.com/samualtricamo/liri-node-app/issues"
   },
