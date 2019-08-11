@@ -3,24 +3,26 @@ require("dotenv").config();
 var request = require("request");
 var fs = require("fs");
 var keys = require("./keys");
-var Spotify = require();
-var spotify = new Spotify();
+var Spotify = require("node-Spotify-API");
+var spotify = new Spotify(keys.spotify);
 var liriReturn = process.argv[2]; 
 var movieName = process.argv[3];
 
-
+function mySwitch(liriReturn) {
+    
 switch (liriReturn) {
     case "concert-this":  //bands in town
     searchForBandsInTown(searchTerm);
     break;
 
     case "spotify-your-song": //spotify
-    spotifyThisSong(searchTerm);
+    getSpotify();
     break;
 
     case "movie-this": //omdbapi
     movieThis(searchTerm);
     break;
+}
 }
 //bands in town api function//
 function searchForBandsInTown(artist) {
@@ -43,43 +45,40 @@ function searchForBandsInTown(artist) {
 }
 
 //SPOTIFY API function
-function spotifyThisSong(trackName) {
-    var trackName = process.argv[3];
-    if (!trackName) {
+var getSpotify = function (trackName) {
+    if (trackName === undefined) {
         trackName = "Your Song";
     };
-    songRequest = trackName;
+
     spotify.search({
         type: "track",
-        query: songRequest
+        query: trackName
     },
         function (err, data) {
             if (!err) {
-                var trackInfo = data.tracks.items;
-                for (var i = 0; i < 5; i++) {
-                    if (trackInfo[i] != undefined) {
-                        var spotifyResults =
-                            "Artist: " + trackInfo[i].artists[0].name + "\n" +
-                            "Song: " + trackInfo[i].name + "\n" +
-                            "Preview URL: " + trackInfo[i].preview_url + "\n" +
-                            "Album: " + trackInfo[i].album.name + "\n"
-
-                        console.log(spotifyResults);
-                        console.log(' ');
-                    };
-                };
-            } else {
-                console.log("error: " + err);
+                console.log("Error Occurred: " + err);
                 return;
-            };
-        });
+            }
+             
+            
+                var songName = data.tracks.items;
+                for (var i = 0; i < songName.length; i++) {
+                            console.log(i);
+                            console.log("Artist: " + songName[i].artists[0].name);
+                            console.log("Song: " + songName[i].name);
+                            console.log("Preview URL: " + songName[i].preview_url);
+                            console.log("Album: " + songName[i].album.name);
+                    
+                }
+            
+        })
 };
   
 // OMDBAPI function
 function movieThis() {
 
     //using name from var list at top
-    var queryUrl = "http://www.omdbapi.com/?t=" + name + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy";
 
     request(queryUrl, function (error, response, body) {
 
@@ -104,16 +103,3 @@ function movieThis() {
     });
 };
 
-function doWhatItSays() {
-
-    fs.writeFile("random.txt", 'spotify-this-song,"Your Song"', function (err) {
-        var song = "spotify-this-song 'Your Song'"
-        // If the code experiences any errors it will log the error to the console.
-        if (err) {
-            return console.log(err);
-        };
-
-        // Otherwise, it will print:
-        console.log(song);
-    });
-};

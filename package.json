@@ -15,7 +15,9 @@
   "dependencies": {
     "dotenv": "^8.0.0",
     "inquirer": "^6.2.1",
-    "request": "^2.88.0"
+    "node-spotify-api": "^1.1.1",
+    "request": "^2.88.0",
+    "spotify": "^0.3.0"
   },
   "bugs": {
     "url": "https://github.com/samualtricamo/liri-node-app/issues"
